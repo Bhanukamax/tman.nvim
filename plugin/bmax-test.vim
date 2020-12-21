@@ -1,4 +1,4 @@
-fun! OpenBmaxTerm()
+fun! OpenTerm()
     " remove after development
     lua for k in pairs(package.loaded) do if k:match("^bmax%-test") then package.loaded[k] = nill end end
     "lua require("bmax-test").bmax_test()
@@ -14,5 +14,3 @@ fun! OpenFloatingTerm()
     lua require("bmax-test").open_floating_term()
 endfun
 
-nnoremap <leader>T :call OpenBmaxTerm()<CR>
-nnoremap <leader>t :call OpenFloatingTerm()<CR>
