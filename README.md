@@ -1,4 +1,4 @@
-# Nvim Terminal Manager
+# Neovim Terminal Manager
 
 
 ## Introduction
