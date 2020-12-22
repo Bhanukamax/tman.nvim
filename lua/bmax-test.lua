@@ -80,7 +80,7 @@ local function open_floating_term()
     if is_new_term_buf then
         print("this is a new buf")
         vim.cmd(":term")
-        --vim.cmd(":set nobuflisted")
+        vim.cmd(":set nobuflisted")
     else
 
         print("this NOT is a new buf")
