@@ -1,5 +1,5 @@
 
-local win, term_buf
+local win, term_buf, floating_term_buf
 --local function set_mapping()
     --local mappings = {
         --q = 'close_window()',
@@ -14,24 +14,35 @@ local win, term_buf
     --end
 
 --end
+local function go_back()
+    vim.cmd(":bp")
+end
 
 local function set_mapping()
     local mappings = {
-        q = 'close_window()',
-        --j = 'resize("+1")',
-        --k = 'resize("-1")',
-        --h = 'v_resize("+1")',
-        --l = 'v_resize("-1")',
+        q = 'go_back()',
     }
-
 
     for k, v in pairs(mappings) do
         vim.api.nvim_buf_set_keymap(term_buf, 'n', k, ':lua require"neotermman".'..v..'<cr>', {
             nowait = true, noremap = true, silent = true
         })
     end
-
 end
+
+local function set_float_mapping()
+    local mappings = {
+        q = 'close_window()',
+    }
+
+
+    for k, v in pairs(mappings) do
+        vim.api.nvim_buf_set_keymap(floating_term_buf, 'n', k, ':lua require"neotermman".'..v..'<cr>', {
+            nowait = true, noremap = true, silent = true
+        })
+    end
+end
+
 
 local function close_window()
     --print("Trying to close")
@@ -50,16 +61,11 @@ local function get_existing_term_buf()
             
         end
     end
-    --print(vim.inspect(buf_list))
     return found_buf
 end
 
 local function attach_term()
-    set_mapping()
     term_buf =  get_existing_term_buf()
-
-    vim.api.nvim_buf_set_option(term_buf, 'modifiable', false)
-
     if term_buf then
         win = vim.api.nvim_get_current_win()
         vim.api.nvim_win_set_buf(win, term_buf.number)
@@ -67,11 +73,10 @@ local function attach_term()
         vim.cmd(":term")
         vim.cmd(":set nobuflisted")
     end
+    set_mapping()
 end
 
 local function open_floating_term()
-    print('>>>>>>>>>>>>>>>>>>>>>>>>>>>>')
-    set_mapping()
     term_buf =  get_existing_term_buf()
     local is_new_term_buf = false
 
@@ -87,7 +92,7 @@ local function open_floating_term()
     local win_width = main_win.width - 4
     local win_height = main_win.height - 4
 
-    local options ={
+    local _options ={
         relative = "cursor",
         width = 20,
         height = 20,
@@ -96,7 +101,7 @@ local function open_floating_term()
         style= 'minimal'
 
     }
-    local options_original = {
+    local options = {
         relative = "win",
         width = win_width,
         height = win_height,
@@ -104,11 +109,15 @@ local function open_floating_term()
         col = 2,
     }
 
-    vim.api.nvim_open_win(term_buf.number, true, options)
+    term_buf = term_buf.number
+    --term_buf = vim.api.nvim_create_buf(false, true)
+    --term_buf = vim.api.nvim_create_buf(false, true);
+
+    win = vim.api.nvim_open_win(term_buf, true, options)
 
     if is_new_term_buf then
         print("this is a new buf")
-        --vim.cmd(":term")
+        vim.cmd(":term")
         vim.cmd(":set nobuflisted")
     else
 
@@ -116,12 +125,14 @@ local function open_floating_term()
 
     end
 
+    set_float_mapping()
 end
 
 
 
 return {
     close_window = close_window,
+    go_back = go_back,
     attach_term = attach_term,
     open_floating_term = open_floating_term,
 }
