@@ -9,7 +9,7 @@ This plugin allows to easily manage a terminal buffer within neovim.
 
 - If you are using `Plug` add the plug to your plugin list:
 ```
-Plug 'Bhanukamax/nvim-term'
+Plug 'Bhanukamax/neotermman'
 ```
 
 - resource the vimrc
