@@ -83,15 +83,6 @@ local function open_floating_term()
     local win_width = main_win.width - 4
     local win_height = main_win.height - 4
 
-    local _options ={
-        relative = "cursor",
-        width = 20,
-        height = 20,
-        row = 0,
-        col = 1,
-        style= 'minimal'
-
-    }
     local options = {
         relative = "win",
         width = win_width,
@@ -101,8 +92,6 @@ local function open_floating_term()
     }
 
     term_buf = term_buf.number
-    --term_buf = vim.api.nvim_create_buf(false, true)
-    --term_buf = vim.api.nvim_create_buf(false, true);
 
     win = vim.api.nvim_open_win(term_buf, true, options)
 
