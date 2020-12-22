@@ -32,6 +32,7 @@ Plug 'Bhanukamax/neotermman'
 
 - OpenTerm() - opens the terminal buffer in the current window
 - OpenFloatingTerm - opens the terminal buffer in a new floating window
+- Pressing `q` will close the term buffer
 
 ```
 nnoremap <leader>T :call OpenTerm()<CR>
@@ -39,6 +40,6 @@ nnoremap <leader>t :call OpenFloatingTerm()<CR>
 ```
 
 
-### Caveat
+### Caveats
 
 This plugin opens the first terminal buffer found on the buffer list including unlisted buffers (can be found by executing `:ls!`, so if you are having multiple terminal buffers this plugin will always only open the first one.
