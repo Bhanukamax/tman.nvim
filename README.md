@@ -40,6 +40,8 @@ Plug 'Bhanukamax/neotermman',  { 'branch': 'feat/toggle' }
 ```
 nnoremap <leader>T :call OpenTerm()<CR>
 nnoremap <leader>t :call OpenFloatingTerm()<CR>
+
+nnoremap <leader>tt :lua require('neotermman').toggle_term()<CR>
 ```
 
 
