@@ -34,4 +34,6 @@
                  (close-term)
                  (open-term)))
            (open-term))))
+(vim.keymap.set :n :<leader>tt M.toggle-term)
+(set M.test 4)
 M
