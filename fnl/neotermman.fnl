@@ -31,32 +31,3 @@
         (close-term)
         (open-term)))
     (open-term)))
-
-(vim.keymap.set :n :<leader>to toggle-term)
-(vim.keymap.set :n :<leader>tt toggle-term)
-
-
-(fn run-term-command [command]
-  (let [ctrl-c "\003"]
-    ((. (require :harpoon.term) :sendCommand) 1
-     (.. ctrl-c "\n" command "\n"))))
-
-
-
-(fn run-build-command [cmd]
-  (let [build-command (vim.api.nvim_get_var cmd)
-        ctrl-c "\003"]
-    ((. (require :harpoon.term) :sendCommand) 1
-     (.. ctrl-c "\n" build-command "\n"))
-    (print "build done")))
-
-
-(vim.keymap.set :n :<leader>dd (fn [] (run-build-command "buildCommand")))
-(vim.keymap.set :n :<leader>de (fn [] (run-build-command "testCommand")))
-
-(fn clear []
-	(nvim-cmd "set guicursor=a:block")
-	(nvim-cmd "noh")
-	(nvim-cmd "diffupdate"))
-
-(vim.keymap.set :n :<c-l> clear)

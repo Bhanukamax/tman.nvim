@@ -36,29 +36,4 @@ local function toggle_term()
     return open_term()
   end
 end
-vim.keymap.set("n", "<leader>to", toggle_term)
-vim.keymap.set("n", "<leader>tt", toggle_term)
-local function run_term_command(command)
-  local ctrl_c = "\3"
-  return (require("harpoon.term")).sendCommand(1, (ctrl_c .. "\n" .. command .. "\n"))
-end
-local function run_build_command(cmd)
-  local build_command = vim.api.nvim_get_var(cmd)
-  local ctrl_c = "\3"
-  do end (require("harpoon.term")).sendCommand(1, (ctrl_c .. "\n" .. build_command .. "\n"))
-  return print("build done")
-end
-local function _4_()
-  return run_build_command("buildCommand")
-end
-vim.keymap.set("n", "<leader>dd", _4_)
-local function _5_()
-  return run_build_command("testCommand")
-end
-vim.keymap.set("n", "<leader>de", _5_)
-local function clear()
-  nvim_cmd("set guicursor=a:block")
-  nvim_cmd("noh")
-  return nvim_cmd("diffupdate")
-end
-return vim.keymap.set("n", "<c-l>", clear)
+return toggle_term
