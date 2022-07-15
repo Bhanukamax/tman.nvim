@@ -40,4 +40,7 @@ local function _4_()
   end
 end
 M["toggle-term"] = _4_
+vim.keymap.set("n", "<leader>tt", M["toggle-term"])
+M.test = 4
+print("loaded neotermman")
 return M
