@@ -45,6 +45,25 @@ nnoremap <leader>tt :lua require('neotermman').toggle_term()<CR>
 ```
 
 
+### Useful keybndings
+
+
+```viml
+:tnoremap <A-h> <C-\><C-N><C-w>h
+:tnoremap <A-j> <C-\><C-N><C-w>j
+:tnoremap <A-k> <C-\><C-N><C-w>k
+:tnoremap <A-l> <C-\><C-N><C-w>l
+:inoremap <A-h> <C-\><C-N><C-w>h
+:inoremap <A-j> <C-\><C-N><C-w>j
+:inoremap <A-k> <C-\><C-N><C-w>k
+:inoremap <A-l> <C-\><C-N><C-w>l
+:nnoremap <A-h> <C-w>h
+:nnoremap <A-j> <C-w>j
+:nnoremap <A-k> <C-w>k
+:nnoremap <A-l> <C-w>l
+```
+
+
 ### Caveats
 
 This plugin opens the first terminal buffer found on the buffer list including unlisted buffers (can be found by executing `:ls!`, so if you are having multiple terminal buffers this plugin will always only open the first one.
