@@ -37,4 +37,5 @@ local function toggle_term()
   end
 end
 vim.keymap.set("n", "<leader>to", toggle_term)
-return vim.keymap.set("n", "<leader>tt", toggle_term)
+vim.keymap.set("n", "<leader>tt", toggle_term)
+return print("loaded neotermman")

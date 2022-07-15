@@ -34,3 +34,5 @@
 
 (vim.keymap.set :n :<leader>to toggle-term)
 (vim.keymap.set :n :<leader>tt toggle-term)
+
+(print "loaded neotermman")
