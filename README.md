@@ -9,7 +9,10 @@ This plugin allows to easily manage a terminal buffer within neovim.
 
 - If you are using `Plug` add the plug to your plugin list:
 ```
-Plug 'Bhanukamax/neotermman'
+Plug 'nvim-lua/plenary.nvim' " don't forget to add this one if you don't have it yet!
+Plug 'ThePrimeagen/harpoon'
+Plug 'Bhanukamax/neotermman',  { 'branch': 'feat/toggle' }
+
 ```
 
 - resource the vimrc
