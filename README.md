@@ -14,7 +14,7 @@ This plugin allows to easily manage a terminal buffer within neovim.
 
 - If you are using `Plug` add the plug to your plugin list:
 ```
-" Depndencies: don't forget to add this one if you don't have it yet!
+" Depndencies: don't forget to add these one if you don't have it yet!
 Plug 'nvim-lua/plenary.nvim'
 Plug 'ThePrimeagen/harpoon'
 
@@ -62,3 +62,4 @@ nnoremap <leader>tt :lua require('neotermman').toggle()<CR>
 ```viml
 :tnoremap <C-w> <C-\><C-N><C-w>
 ```
+
