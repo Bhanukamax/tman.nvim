@@ -25,11 +25,21 @@ Plug 'Bhanukamax/neotermman',  { 'branch': 'feat/toggle' }
 :PlugInstall
 ```
 
-### Features:
+### keybinding
 
-- Opens a terminal buffer and make it unlisted so it won't come accrose when you move between buffers using `:bn` or `:bp`
-- Always opens the same terminal buffer provided you don't quite the terminal.
+#### Lua
 
+```
+local tman = require('neotermman')
+vim.keymap.set("n", "<leader>tt", tman.toggle)
+
+```
+
+#### viml
+
+```
+nnoremap <leader>tt :lua require('neotermman').toggle()<CR>
+```
 
 ### Methods
 
@@ -45,25 +55,17 @@ nnoremap <leader>tt :lua require('neotermman').toggle_term()<CR>
 ```
 
 
-### Useful keybndings
+### Interacting with neovim terminal
 
+- `neotermman` uses the neovim terminal,
+- by defualt terminal buffer will open in the `terminal` mode which is similar to `normal` mode.
+- to interact with the terminal you need to go into insert mode by pressing `i` key.
 
+#### After using terminal
+- to exit out of the insert mode in the terminal, you need to use the neovim terminal escape key sequence which is `<C-\><C-N>`.
+- since above key sequence is not very easy, you can rebind it to something else.
+- If you already haven't got a keybinding, I think using `C-w` and piping that to `wincmd` is a great way because you can use all the `C-w` prefix commands with that
+- Add the following to be able to do `C-w` prefixed commands from your terminal buffer.
 ```viml
-:tnoremap <A-h> <C-\><C-N><C-w>h
-:tnoremap <A-j> <C-\><C-N><C-w>j
-:tnoremap <A-k> <C-\><C-N><C-w>k
-:tnoremap <A-l> <C-\><C-N><C-w>l
-:inoremap <A-h> <C-\><C-N><C-w>h
-:inoremap <A-j> <C-\><C-N><C-w>j
-:inoremap <A-k> <C-\><C-N><C-w>k
-:inoremap <A-l> <C-\><C-N><C-w>l
-:nnoremap <A-h> <C-w>h
-:nnoremap <A-j> <C-w>j
-:nnoremap <A-k> <C-w>k
-:nnoremap <A-l> <C-w>l
+:tnoremap <C-w> <C-\><C-N><C-w>
 ```
-
-
-### Caveats
-
-This plugin opens the first terminal buffer found on the buffer list including unlisted buffers (can be found by executing `:ls!`, so if you are having multiple terminal buffers this plugin will always only open the first one.

@@ -3,4 +3,4 @@
 
 
 (print "test")
-(vim.keymap.set :n :<leader>tt tman.toggle)
+(vim.keymap.set :n :<leader>tt tman.toggle);
