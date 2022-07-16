@@ -26,7 +26,6 @@ local function close_term()
 end
 local function toggle_term()
   is_term_open = not is_term_open
-  print("toggling term")
   if win_id then
     local has_term = vim.api.nvim_win_is_valid(win_id)
     if has_term then

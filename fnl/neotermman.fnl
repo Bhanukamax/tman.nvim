@@ -27,7 +27,6 @@
 
 (fn toggle-term []
   (set is-term-open (not is-term-open))
-  (print "toggling term")
   (if win-id
     (let [has-term (vim.api.nvim_win_is_valid win-id)]
       (if has-term
