@@ -14,7 +14,7 @@ This plugin allows to easily manage a terminal buffer within neovim.
 
 - If you are using `Plug` add the plug to your plugin list:
 ```
-" Depndencies: forget to add this one if you don't have it yet!
+" Depndencies: don't forget to add this one if you don't have it yet!
 Plug 'nvim-lua/plenary.nvim'
 Plug 'ThePrimeagen/harpoon'
 
