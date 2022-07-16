@@ -1,3 +1,4 @@
+local M = {}
 local is_term_open = false
 local win_id = nil
 local harpoon = require("harpoon.term")
@@ -25,6 +26,7 @@ local function close_term()
 end
 local function toggle_term()
   is_term_open = not is_term_open
+  print("toggling term")
   if win_id then
     local has_term = vim.api.nvim_win_is_valid(win_id)
     if has_term then
@@ -38,4 +40,9 @@ local function toggle_term()
 end
 vim.keymap.set("n", "<leader>to", toggle_term)
 vim.keymap.set("n", "<leader>tt", toggle_term)
-return print("loaded neotermman")
+M.toggle = toggle_term
+M.what = function()
+   print("what")
+end
+print("this is the termman")
+return M

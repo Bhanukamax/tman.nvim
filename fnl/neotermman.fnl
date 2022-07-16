@@ -1,3 +1,5 @@
+(local M {})
+
 (var is-term-open false)
 (var win-id nil)
 
@@ -25,6 +27,7 @@
 
 (fn toggle-term []
   (set is-term-open (not is-term-open))
+  (print "toggling term")
   (if win-id
     (let [has-term (vim.api.nvim_win_is_valid win-id)]
       (if has-term
@@ -32,7 +35,13 @@
         (open-term)))
     (open-term)))
 
-(vim.keymap.set :n :<leader>to toggle-term)
-(vim.keymap.set :n :<leader>tt toggle-term)
+;;(vim.keymap.set :n :<leader>to toggle-term)
+;;(vim.keymap.set :n :<leader>tt toggle-term)jjj
+(set M.toggle toggle-term)
+;;(print "this is the termman")
+;; (print "what")
 
-(print "loaded neotermman")
+;; (set M.what (fn []
+;;               (print "test")))
+
+M
