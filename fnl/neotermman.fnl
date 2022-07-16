@@ -35,13 +35,6 @@
         (open-term)))
     (open-term)))
 
-;;(vim.keymap.set :n :<leader>to toggle-term)
-;;(vim.keymap.set :n :<leader>tt toggle-term)jjj
 (set M.toggle toggle-term)
-;;(print "this is the termman")
-;; (print "what")
-
-;; (set M.what (fn []
-;;               (print "test")))
 
 M
