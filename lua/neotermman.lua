@@ -38,11 +38,5 @@ local function toggle_term()
     return open_term()
   end
 end
-vim.keymap.set("n", "<leader>to", toggle_term)
-vim.keymap.set("n", "<leader>tt", toggle_term)
 M.toggle = toggle_term
-M.what = function()
-   print("what")
-end
-print("this is the termman")
 return M
