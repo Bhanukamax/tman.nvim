@@ -13,4 +13,3 @@ fun! OpenFloatingTerm()
     "lua require("bmax-test").bmax_test()
     lua require("neotermman").open_floating_term()
 endfun
-
