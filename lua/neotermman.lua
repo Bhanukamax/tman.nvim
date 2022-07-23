@@ -2,6 +2,7 @@ local M = {}
 local is_term_open = false
 local win_id = nil
 local harpoon = require("harpoon.term")
+M["current-term-number"] = 1
 local function nvim_cmd(cmd)
   return vim.api.nvim_command(cmd)
 end
@@ -14,7 +15,7 @@ local function open_term()
   local current_win = vim.api.nvim_get_current_win()
   win_id = current_win
   vim.api.nvim_win_set_height(current_win, 10)
-  harpoon.gotoTerminal(1)
+  harpoon.gotoTerminal(M["current-term-number"])
   return nvim_cmd("set nobuflisted")
 end
 local function close_term()
@@ -24,7 +25,8 @@ local function close_term()
     return nil
   end
 end
-local function toggle_term()
+local function toggle_term(n)
+  M["current-term-number"] = n
   is_term_open = not is_term_open
   if win_id then
     local has_term = vim.api.nvim_win_is_valid(win_id)

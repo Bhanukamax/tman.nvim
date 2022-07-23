@@ -5,6 +5,8 @@
 
 (local harpoon (require :harpoon.term))
 
+(set M.current-term-number 1)
+
 (fn nvim-cmd [cmd]
   (vim.api.nvim_command cmd))
 
@@ -17,7 +19,7 @@
   (let [current-win (vim.api.nvim_get_current_win)]
     (set win-id current-win)
     (vim.api.nvim_win_set_height current-win 10)
-    (harpoon.gotoTerminal 1)
+    (harpoon.gotoTerminal M.current-term-number)
     (nvim-cmd "set nobuflisted")))
 
 (fn close-term []
@@ -25,7 +27,8 @@
     (vim.api.nvim_call_function :win_gotoid {1 win-id})
     (vim.api.nvim_win_close win-id {})))
 
-(fn toggle-term []
+(fn toggle-term [n]
+  (set M.current-term-number n)
   (set is-term-open (not is-term-open))
   (if win-id
     (let [has-term (vim.api.nvim_win_is_valid win-id)]
