@@ -37,14 +37,33 @@ Plug 'Bhanukamax/neotermman'
 
 ```
 local tman = require('neotermman')
-vim.keymap.set("n", "<leader>tt", tman.toggle)
+
+
+local function toggleTerm()
+  return tman.toggle(nil)
+end
+
+local function toggleTerm1()
+  return tman.toggle(1)
+end
+
+local function toggleTerm2()
+  return tman.toggle(2)
+end
+
+vim.keymap.set("n", "<leader>tt", toggleTerm)
+vim.keymap.set("n", "<leader>t1", toggleTerm1)
+vim.keymap.set("n", "<leader>t2", toggleTerm2)
 
 ```
 
 #### viml
 
 ```
-nnoremap <leader>tt :lua require('neotermman').toggle()<CR>
+nnoremap <leader>tt :lua require('neotermman').toggle(nil)<CR>
+nnoremap <leader>t1 :lua require('neotermman').toggle(1)<CR>
+nnoremap <leader>t2 :lua require('neotermman').toggle(2)<CR>
+nnoremap <leader>t3 :lua require('neotermman').toggle(3)<CR>
 ```
 
 
