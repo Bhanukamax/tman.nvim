@@ -4,7 +4,7 @@ print("test")
 local function _1_()
   return tman.toggle(1)
 end
-vim.keymap.set("n", "<leader>tt", _1_)
+vim.keymap.set("n", "<leader>t1", _1_)
 local function _2_()
   return tman.toggle(2)
 end
