@@ -11,6 +11,7 @@ local function api(cmd)
   return vim.api[cmd]
 end
 local function open_term()
+  is_term_open = not is_term_open
   nvim_cmd("sp")
   nvim_cmd("wincmd J")
   local current_win = vim.api.nvim_get_current_win()
@@ -24,16 +25,29 @@ local function switch_to_term(n)
   return harpoon.gotoTerminal(n)
 end
 local function close_term()
+  is_term_open = not is_term_open
   if vim.api.nvim_call_function("win_gotoid", {win_id}) then
     return vim.api.nvim_win_close(win_id, {})
   else
     return nil
   end
 end
-local function toggle_term(n)
+local function toggle_last_term()
+  is_term_open = not is_term_open
+  if win_id then
+    local has_term = vim.api.nvim_win_is_valid(win_id)
+    if has_term then
+      return close_term()
+    else
+      return open_term()
+    end
+  else
+    return open_term()
+  end
+end
+local function toggle_term_with_number(n)
   is_different_terminal = (M["current-term-number"] == n)
   M["current-term-number"] = n
-  is_term_open = not is_term_open
   if win_id then
     local has_term = vim.api.nvim_win_is_valid(win_id)
     if has_term then
@@ -47,6 +61,13 @@ local function toggle_term(n)
     end
   else
     return open_term()
+  end
+end
+local function toggle_term(n)
+  if (nil == n) then
+    return toggle_last_term()
+  else
+    return toggle_term_with_number(n)
   end
 end
 M.toggle = toggle_term
