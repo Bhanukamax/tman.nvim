@@ -3,12 +3,10 @@
 
 ## Introduction
 
-This plugin allows to easily manage a terminal buffer within neovim.
+This plugin allows to easily manage terminal buffers within neovim.
 
 ### Note:
-- Neotermman is just a thin wrapper around `ThePrimeagen/harpoon` which is a more powerful plugin.
-- This is meant for only as a quick start method, to get a toggleable terminal buffer going in your neovim as fast as possible.
-- If you are an advanced vimmer you may not need this plugin, you can use something like `harpoon` directly according to your liking.
+- Neotermman is a thin wrapper around `ThePrimeagen/harpoon` which is a more powerful plugin.
 
 #### How to install
 
@@ -81,4 +79,3 @@ nnoremap <leader>t3 :lua require('neotermman').toggle(3)<CR>
 ```viml
 :tnoremap <C-w> <C-\><C-N><C-w>
 ```
-
