@@ -13,30 +13,23 @@ This plugin allows to easily manage terminal buffers within neovim.
 - If you are using `Plug` add the plug to your plugin list:
 
   #+begin_src viml
-
 " Depndencies: don't forget to add these if you don't have it yet!
 Plug 'nvim-lua/plenary.nvim'
 Plug 'ThePrimeagen/harpoon'
 
 Plug 'Bhanukamax/neotermman'
-
   #+end_src
 
 - resource the vimrc
 
   #+begin_src viml
-
 :source $MYVIMRC
-
-
   #+end_src
 
 - run plug install
 
   #+begin_src viml
-
 :PlugInstall
-
   #+end_src
 
 *** Setup
