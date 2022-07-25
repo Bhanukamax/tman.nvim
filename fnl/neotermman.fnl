@@ -65,4 +65,11 @@
 
 (set M.toggle toggle-term)
 
+(fn init [opt]
+  (vim.keymap.set :n (..  opt.toggle)  #(M.toggle nil))
+  (for [i 1 9 1]
+    (vim.keymap.set :n (.. opt.prefix i) #(M.toggle i))))
+
+(set M.init init)
+
 M
