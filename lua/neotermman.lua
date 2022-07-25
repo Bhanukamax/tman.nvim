@@ -71,4 +71,18 @@ local function toggle_term(n)
   end
 end
 M.toggle = toggle_term
+local function init(opt)
+  local function _8_()
+    return M.toggle(nil)
+  end
+  vim.keymap.set("n", opt.toggle, _8_)
+  for i = 1, 9, 1 do
+    local function _9_()
+      return M.toggle(i)
+    end
+    vim.keymap.set("n", (opt.prefix .. i), _9_)
+  end
+  return nil
+end
+M.init = init
 return M
