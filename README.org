@@ -12,25 +12,25 @@ This plugin allows to easily manage terminal buffers within neovim.
 
 - If you are using `Plug` add the plug to your plugin list:
 
-  #+begin_src viml
+#+begin_src viml
 " Depndencies: don't forget to add these if you don't have it yet!
 Plug 'nvim-lua/plenary.nvim'
 Plug 'ThePrimeagen/harpoon'
 
 Plug 'Bhanukamax/neotermman'
-  #+end_src
+#+end_src
 
 - resource the vimrc
 
-  #+begin_src viml
+#+begin_src viml
 :source $MYVIMRC
-  #+end_src
+#+end_src
 
 - run plug install
 
-  #+begin_src viml
+#+begin_src viml
 :PlugInstall
-  #+end_src
+#+end_src
 
 *** Setup
 **** Lua
@@ -61,6 +61,15 @@ tman.init({toggle = "<leader>gg", prefix = "<leader>t"})
 - If you already haven't got a keybinding, I think using `C-w` and piping that to `wincmd` is a great way because you can use all the `C-w` prefix commands with that
 - Add the following to your vim config be able to do `C-w` prefixed commands from your terminal buffer.
 
-  #+begin_src viml
+**** Lua
+#+begin_src lua
+vim.api.nvim_set_keymap("t", "<C-w>", "<C-\\><C-N><C-w>", {})
+#+end_src
+
+**** Viml
+#+begin_src viml
 :tnoremap <C-w> <C-\><C-N><C-w>
-  #+end_src
+#+end_src
+ 
+
+
