@@ -1,75 +1,78 @@
-* Neovim Terminal Manager
+# Neovim Terminal Manager
 
 
-** Introduction
+## Introduction
 
 This plugin allows to easily manage terminal buffers within neovim.
 
-*** Note:
+### Note:
 - Neotermman is a thin wrapper around `ThePrimeagen/harpoon` which is a more powerful plugin.
 
-**** How to install
+#### How to install
 
 - If you are using `Plug` add the plug to your plugin list:
 
-#+begin_src viml
+```viml
 " Depndencies: don't forget to add these if you don't have it yet!
 Plug 'nvim-lua/plenary.nvim'
 Plug 'ThePrimeagen/harpoon'
 
 Plug 'Bhanukamax/neotermman'
-#+end_src
+```
 
 - resource the vimrc
 
-#+begin_src viml
+```viml
 :source $MYVIMRC
-#+end_src
+```
 
 - run plug install
 
-#+begin_src viml
+```viml
 :PlugInstall
-#+end_src
+```
 
-*** Setup
-**** Lua
+### Setup
+#### Lua
 
-#+begin_src lua
+```lua
 
 local tman = require('neotermman')
 tman.init({toggle = "<leader>gg", prefix = "<leader>t"})
+```
 
-#+end_src viml
+#### viml
 
-**** viml
-
-#+begin_src viml
+```viml
 :lua require('neotermman').init({toggle = "<leader>gg", prefix = "<leader>t"})
-#+end_src
+```
 
 
-*** Interacting with neovim terminal
+### Interacting with neovim terminal
 
 - `neotermman` uses the neovim terminal,
 - by defualt terminal buffer will open in the `terminal` mode which is similar to `normal` mode.
 - to interact with the terminal you need to go into insert mode by pressing `i` key.
 
-**** After using terminal
+#### After using terminal
 - to exit out of the insert mode in the terminal, you need to use the neovim terminal escape key sequence which is `<C-\><C-N>`.
 - since above key sequence is not very easy, you can rebind it to something else.
 - If you already haven't got a keybinding, I think using `C-w` and piping that to `wincmd` is a great way because you can use all the `C-w` prefix commands with that
 - Add the following to your vim config be able to do `C-w` prefixed commands from your terminal buffer.
 
-**** Lua
-#+begin_src lua
-vim.api.nvim_set_keymap("t", "<C-w>", "<C-\\><C-N><C-w>", {})
-#+end_src
+#### Lua
 
-**** Viml
-#+begin_src viml
+```lua
+vim.keymap.set("t", "<C-w>", "<C-\\><C-N><C-w>", {})
+vim.keymap.set("t", "<Esc>", "<C-\\><C-N>", {})
+```
+
+#### Viml
+
+```viml
 :tnoremap <C-w> <C-\><C-N><C-w>
-#+end_src
- 
+:tnoremap <Esc> <C-\><C-N>
+```
+
 
 
