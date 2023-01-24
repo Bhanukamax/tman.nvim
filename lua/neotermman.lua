@@ -3,13 +3,13 @@ local is_term_open = false
 local win_id = nil
 local is_different_terminal = false
 local harpoon = require("harpoon.term")
+
 M["current-term-number"] = 1
+
 local function nvim_cmd(cmd)
   return vim.api.nvim_command(cmd)
 end
-local function api(cmd)
-  return vim.api[cmd]
-end
+
 local function open_term()
   is_term_open = not is_term_open
   nvim_cmd("sp")
@@ -20,10 +20,12 @@ local function open_term()
   harpoon.gotoTerminal(M["current-term-number"])
   return nvim_cmd("set nobuflisted")
 end
+
 local function switch_to_term(n)
   vim.api.nvim_call_function("win_gotoid", {win_id})
   return harpoon.gotoTerminal(n)
 end
+
 local function close_term()
   is_term_open = not is_term_open
   if vim.api.nvim_call_function("win_gotoid", {win_id}) then
@@ -32,6 +34,7 @@ local function close_term()
     return nil
   end
 end
+
 local function toggle_last_term()
   is_term_open = not is_term_open
   if win_id then
@@ -45,6 +48,7 @@ local function toggle_last_term()
     return open_term()
   end
 end
+
 local function toggle_term_with_number(n)
   is_different_terminal = (M["current-term-number"] == n)
   M["current-term-number"] = n
@@ -63,6 +67,7 @@ local function toggle_term_with_number(n)
     return open_term()
   end
 end
+
 local function toggle_term(n)
   if (nil == n) then
     return toggle_last_term()
@@ -70,17 +75,19 @@ local function toggle_term(n)
     return toggle_term_with_number(n)
   end
 end
+
 M.toggle = toggle_term
+
 local function init(opt)
-  local function _8_()
+  local function toggle_shortcut()
     return M.toggle(nil)
   end
-  vim.keymap.set("n", opt.toggle, _8_)
+  vim.keymap.set("n", opt.toggle, toggle_shortcut)
   for i = 1, 9, 1 do
-    local function _9_()
+    local function switch_shortcut()
       return M.toggle(i)
     end
-    vim.keymap.set("n", (opt.prefix .. i), _9_)
+    vim.keymap.set("n", (opt.prefix .. i), switch_shortcut)
   end
   return nil
 end
