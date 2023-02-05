@@ -21,6 +21,7 @@ end
 
 -- opens the bottom terminal
 M.openTerm = function ()
+    tman.last_buf_id = vim.api.nvim_get_current_buf()
     if tman.buf then
     vim.cmd[[
     sp
@@ -70,7 +71,11 @@ end
 M.closeTermIfOpen = function()
     local hasTerm = M.hasTermWin()
     if M.hasOnlyTermWins() then
-        vim.cmd[[bp]]
+        if tman.last_buf_id then
+            vim.api.nvim_win_set_buf(vim.api.nvim_get_current_win(), tman.last_buf_id)
+        else
+            vim.cmd[[bp]]
+        end
     end
 
     for _,v in pairs(vim.api.nvim_list_wins()) do
