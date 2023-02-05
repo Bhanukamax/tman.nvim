@@ -46,10 +46,31 @@ M.sendCommand = function()
     end
 end
 
+
+M.hasOnlyTermWins = function()
+    for _,v in pairs(vim.api.nvim_list_wins()) do
+        local cbuf_id = vim.api.nvim_win_get_buf(v)
+        if cbuf_id ~= tman.buf then
+            return false
+        end
+    end
+    return true
+end
+
+M.hasTermWin = function()
+    for _,v in pairs(vim.api.nvim_list_wins()) do
+        local cbuf_id = vim.api.nvim_win_get_buf(v)
+        if cbuf_id == tman.buf then
+            return true
+        end
+    end
+    return false
+end
+
 M.closeTermIfOpen = function()
-    local win_list = vim.api.nvim_list_wins()
-    if (len(win_list) <= 2)  then
-        return false
+    local hasTerm = M.hasTermWin()
+    if M.hasOnlyTermWins() then
+        vim.cmd[[bp]]
     end
 
     for _,v in pairs(vim.api.nvim_list_wins()) do
@@ -58,7 +79,7 @@ M.closeTermIfOpen = function()
             vim.api.nvim_win_close(v, false)
         end
     end
-    return true
+    return hasTerm
 end
 
 M.toggleTerm = function ()
