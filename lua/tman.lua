@@ -19,15 +19,28 @@ M.debug = function ()
     pprint(tman)
 end
 
+M.isTermValid = function ()
+    for _,b in ipairs(vim.api.nvim_list_bufs()) do
+        if b == tman.buf then
+            return true
+        end
+    end
+    return false
+end
+
 -- opens the bottom terminal
 M.openTerm = function ()
     tman.last_buf_id = vim.api.nvim_get_current_buf()
-    if tman.buf then
+    if M.isTermValid() then
     vim.cmd[[
     sp
     wincmd J
     ]]
-        vim.api.nvim_set_current_buf(tman.buf)
+        -- if M.isTermValid() then
+            vim.api.nvim_set_current_buf(tman.buf)
+        -- else
+        --     tman.buf = vim.api.nvim_get_current_buf()
+        -- end
         return
     end
 
