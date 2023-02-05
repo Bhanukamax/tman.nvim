@@ -1,11 +1,3 @@
-local len = function (tbl)
-    local i = 1
-    for _ in ipairs(tbl) do
-        i = i + 1
-    end
-    return i
-end
-
 local M = {}
 
 local tman = {}
@@ -36,11 +28,7 @@ M.openTerm = function ()
     sp
     wincmd J
     ]]
-        -- if M.isTermValid() then
-            vim.api.nvim_set_current_buf(tman.buf)
-        -- else
-        --     tman.buf = vim.api.nvim_get_current_buf()
-        -- end
+        vim.api.nvim_set_current_buf(tman.buf)
         return
     end
 
@@ -54,12 +42,22 @@ M.openTerm = function ()
     tman.term = vim.b.terminal_job_id
 end
 
-M.sendCommand = function()
+M.sendCommand = function(cmd, shouldOpen)
+
+    if not M.hasTermWin() then
+        M.openTerm()
+    end
+
     if tman.buf then
-        vim.api.nvim_chan_send(tman.term, "ls\n")
+        vim.api.nvim_chan_send(tman.term, cmd)
     end
 end
 
+M.sendCommandLn = function(cmd)
+    if tman.buf then
+        vim.api.nvim_chan_send(tman.term, cmd .. "\r")
+    end
+end
 
 M.hasOnlyTermWins = function()
     for _,v in pairs(vim.api.nvim_list_wins()) do
