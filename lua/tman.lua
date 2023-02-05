@@ -56,10 +56,8 @@ M.sendCommand = function(cmd, shouldOpen)
     end
 end
 
-M.sendCommandLn = function(cmd)
-    if tman.buf then
-        vim.api.nvim_chan_send(tman.term, cmd .. "\r")
-    end
+M.sendCommandLn = function(cmd, shouldOpen)
+    M.sendCommand(cmd .. "\n", shouldOpen)
 end
 
 M.hasOnlyTermWins = function()
