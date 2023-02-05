@@ -42,12 +42,17 @@ M.openTerm = function ()
     tman.term = vim.b.terminal_job_id
 end
 
-M.sendCommand = function(cmd)
+M.sendCommand = function(cmd, shouldOpen)
     if M.isTermValid() then
         vim.api.nvim_chan_send(tman.term, cmd)
     else
         M.openTerm()
         vim.api.nvim_chan_send(tman.term, cmd)
+    end
+    if shouldOpen then
+        if not M.hasTermWin() then
+            M.openTerm()
+        end
     end
 end
 
