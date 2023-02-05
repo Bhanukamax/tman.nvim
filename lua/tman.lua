@@ -3,7 +3,6 @@ local len = function (tbl)
     for _ in ipairs(tbl) do
         i = i + 1
     end
-
     return i
 end
 
@@ -47,10 +46,10 @@ M.sendCommand = function()
     end
 end
 
-M.closeTerm = function()
+M.closeTermIfOpen = function()
     local win_list = vim.api.nvim_list_wins()
     if (len(win_list) <= 2)  then
-        return
+        return false
     end
 
     for _,v in pairs(vim.api.nvim_list_wins()) do
@@ -59,6 +58,13 @@ M.closeTerm = function()
             vim.api.nvim_win_close(v, false)
         end
     end
+    return true
+end
+
+M.toggleTerm = function ()
+  if M.closeTermIfOpen() == false then
+        M.openTerm()
+  end
 end
 
 M.goToTerm = function ()
