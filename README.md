@@ -43,7 +43,7 @@ tman.setup {
 ```lua
 vim.keymap.set("n", "<A-;>", function ()
   tman.toggleTerm()
-  vim.cmd "normal! i"
+  vim.cmd "normal! i" -- if you like to open terminal in insert mode
 end)
 
 vim.keymap.set("t", "<A-;>", function ()
