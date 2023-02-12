@@ -14,7 +14,6 @@ Add this to your packer or Lazy config
 ```lua
 {
   'Bhanukamax/tman.nvim',
-  branch = 'develop'
 }
 ```
 
