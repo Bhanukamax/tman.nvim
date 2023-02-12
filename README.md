@@ -29,9 +29,9 @@ tman.init({toggle = "<leader>gg", prefix = "<leader>t"})
 
 -- setup how the terminal buffer is displayed
 tman.setup {
-  split = "bottom", -- supportd values: "bottom", "right"
+  split = "bottom", -- supported values: "bottom", "right"
   -- set width and height as a percentage of the terminal width and height
-  -- shold be a integer between 1 to 100
+  -- should be a integer between 1 to 100
   width = 50,
   height = 40,
 }
@@ -59,12 +59,8 @@ end)
 ```lua
 local gitk_file = function()
   local filename = vim.fn.expand('%')
-  local test_cmd = "gitk " .. filename .. "\r"
-  vim.notify("Opennig gitk for file", "success", {
-    timeout = 300,
-    render = 'compact'
-  })
-  require("tman").sendCommand(test_cmd, {})
+  local cmd = "gitk " .. filename .. "\r"
+  require("tman").sendCommand(cmd, {})
 end
 ```
 
@@ -76,7 +72,7 @@ vim.cmd[[
 function! Tman(cmd)
 
 let g:cmd = a:cmd . "\n"
-lua require("tman").sendCommand(vim.g.bmax_test_pefix .. vim.g.cmd, {open = true, split = "right"})
+lua require("tman").sendCommand(vim.g.cmd, {open = true, split = "right"})
 endfunction
 
 let g:test#custom_strategies = {'tman': function('Tman')}
