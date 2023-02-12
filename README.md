@@ -37,7 +37,7 @@ tman.setup {
 }
 
 ```
-### Useage
+### Usage
 
 #### Toggle terminal
 ```lua
