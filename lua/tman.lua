@@ -126,26 +126,31 @@ end
 
 M.get_full_width = function ()
     local full_width = 0
-   local wins = vim.api.nvim_list_wins()
    for _,v in pairs(vim.api.nvim_list_wins()) do
     full_width = full_width + vim.api.nvim_win_get_width(v)
    end
-    vim.pretty_print({wins, full_width})
    return full_width
 end
 
+M.get_full_height = function ()
+    local full_height = 0
+   for _,v in pairs(vim.api.nvim_list_wins()) do
+    full_height = full_height + vim.api.nvim_win_get_height(v)
+   end
+   return full_height
+end
 
 M.toggleTerm = function ()
   if M.closeTermIfOpen() == false then
         M.openTerm()
-local width = M.get_full_width()
+-- local width = M.get_full_width()
     -- vim.pretty_print({'test'})
 
     local win = vim.api.nvim_get_current_win()
     if tman.split == "vertical" then
-        vim.api.nvim_win_set_width(win, math.floor(width /100 * tman.width ))
+        vim.api.nvim_win_set_width(win, math.floor(M.get_full_width() /100 * tman.width ))
     elseif tman.split == "horizontal" then
-        vim.api.nvim_win_set_height(win, math.floor(get_full_width() / tman.height))
+        vim.api.nvim_win_set_height(win, math.floor(M.get_full_height() /100 * tman.height ))
     end
   end
 end
