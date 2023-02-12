@@ -50,12 +50,12 @@ M.openTerm = function (split)
         return
     end
 
-        if tman.split == "right" then
+        if split == "right" then
             vim.cmd[[
             sp
         wincmd L
             ]]
-        elseif tman.split == "bottom" then
+        elseif split == "bottom" then
             vim.cmd[[
             sp
             wincmd J
