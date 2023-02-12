@@ -3,34 +3,21 @@
 
 ## Introduction
 
-This plugin allows to easily manage terminal buffers within neovim.
 
 ### Note:
-- Neotermman is a thin wrapper around `ThePrimeagen/harpoon` which is a more powerful plugin.
+- Tman.nvim is a simple light weight plugin to manage a terminal buffer in neovim
 
 #### How to install
 
-- If you are using `Plug` add the plug to your plugin list:
+Add this to your packer or Lazy config
 
-```viml
-" Depndencies: don't forget to add these if you don't have it yet!
-Plug 'nvim-lua/plenary.nvim'
-Plug 'ThePrimeagen/harpoon'
-
-Plug 'Bhanukamax/neotermman'
+```lua
+{
+  'Bhanukamax/tman.nvim',
+  branch = 'develop'
+}
 ```
 
-- resource the vimrc
-
-```viml
-:source $MYVIMRC
-```
-
-- run plug install
-
-```viml
-:PlugInstall
-```
 
 ### Setup
 #### Lua
@@ -39,14 +26,85 @@ Plug 'Bhanukamax/neotermman'
 
 local tman = require('neotermman')
 tman.init({toggle = "<leader>gg", prefix = "<leader>t"})
+
+-- setup how the terminal buffer is displayed
+tman.setup {
+  split = "bottom", -- supportd values: "bottom", "right"
+  -- set width and height as a percentage of the terminal width and height
+  -- shold be a integer between 1 to 100
+  width = 50,
+  height = 40,
+}
+
+```
+### Useage
+
+#### Toggle terminal
+```lua
+vim.keymap.set("n", "<A-;>", function ()
+  tman.toggleTerm()
+  vim.cmd "normal! i"
+end)
+
+vim.keymap.set("t", "<A-;>", function ()
+  tman.toggleTerm()
+end)
+
+```
+#### Send command
+
+
+-- use gitk for the current file
+
+```lua
+local gitk_file = function()
+  local filename = vim.fn.expand('%')
+  local test_cmd = "gitk " .. filename .. "\r"
+  vim.notify("Opennig gitk for file", "success", {
+    timeout = 300,
+    render = 'compact'
+  })
+  require("tman").sendCommand(test_cmd, {})
+end
 ```
 
-#### viml
+-- use as a vim-test stratergy
+```lua
 
-```viml
-:lua require('neotermman').init({toggle = "<leader>gg", prefix = "<leader>t"})
+vim.cmd[[
+
+function! Tman(cmd)
+
+let g:cmd = a:cmd . "\n"
+lua require("tman").sendCommand(vim.g.bmax_test_pefix .. vim.g.cmd, {open = true, split = "right"})
+endfunction
+
+let g:test#custom_strategies = {'tman': function('Tman')}
+let g:test#strategy = 'tman'
+
+]]
+
+vim.keymap.set("n", "<leader>tf", ":TestFile<CR>")
+vim.keymap.set("n", "<leader>ts", ":TestNearest<CR>")
+vim.keymap.set("n", "<leader>tl", ":TestLast<CR>")
+
+return {
+  'vim-test/vim-test',
+  cmd = {'TestNearest', 'TestFile', 'TestLast'},
+  dependencies = {
+    dir = 'Bhanukamax/tman.nvim',
+  }
+}
 ```
 
+-- open magit for the current working directory using emacsclient
+```lua
+    local open_magit_status = function ()
+      tman.sendCommand('emacsclient -cn  -e "(magit-status)" \r', {})
+    end
+
+    vim.keymap.set("n", "<leader>cgg", open_magit_status)
+```
 
 ### Interacting with neovim terminal
 
@@ -63,16 +121,7 @@ tman.init({toggle = "<leader>gg", prefix = "<leader>t"})
 #### Lua
 
 ```lua
-vim.keymap.set("t", "<C-w>", "<C-\\><C-N><C-w>", {})
-vim.keymap.set("t", "<Esc>", "<C-\\><C-N>", {})
+vim.keymap.set("t", "<C-x><C-w>", "<C-\\><C-N><C-w>", {})
+vim.keymap.set("t", "<C-x><Esc>", "<C-\\><C-N>", {})
 ```
-
-#### Viml
-
-```viml
-:tnoremap <C-w> <C-\><C-N><C-w>
-:tnoremap <Esc> <C-\><C-N>
-```
-
-
 
