@@ -54,7 +54,7 @@ end)
 #### Send command
 
 
--- use gitk for the current file
+##### use gitk for the current file
 
 ```lua
 local gitk_file = function()
@@ -68,7 +68,7 @@ local gitk_file = function()
 end
 ```
 
--- use as a vim-test stratergy
+##### use as a vim-test stratergy
 ```lua
 
 vim.cmd[[
@@ -97,7 +97,7 @@ return {
 }
 ```
 
--- open magit for the current working directory using emacsclient
+##### open magit for the current working directory using emacsclient
 ```lua
     local open_magit_status = function ()
       tman.sendCommand('emacsclient -cn  -e "(magit-status)" \r', {})
