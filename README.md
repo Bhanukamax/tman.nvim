@@ -92,7 +92,7 @@ return {
   'vim-test/vim-test',
   cmd = {'TestNearest', 'TestFile', 'TestLast'},
   dependencies = {
-    dir = 'Bhanukamax/tman.nvim',
+    'Bhanukamax/tman.nvim',
   }
 }
 ```
