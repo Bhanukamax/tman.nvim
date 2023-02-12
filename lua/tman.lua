@@ -8,13 +8,13 @@ local pprint = function (tbl)
 end
 
 tman.split = "bottom"
-tman.width = 20
-tman.height =  10
+tman.width = 50
+tman.height =  40
 
 M.setup = function (tbl)
     tman.split = tbl.split or "bottom"
-    tman.width = tbl.width or 20
-    tman.height= tbl.height or 10
+    tman.width = tbl.width or 50
+    tman.height= tbl.height or 40
 end
 
 -- Goal is to drop harpoon as a dependency
@@ -32,15 +32,15 @@ M.isTermValid = function ()
 end
 
 -- opens the bottom terminal
-M.openTerm = function ()
+M.openTerm = function (split)
     tman.last_buf_id = vim.api.nvim_get_current_buf()
     if M.isTermValid() then
-        if tman.split == "right" then
+        if split == "right" then
             vim.cmd[[
             sp
         wincmd L
             ]]
-        elseif tman.split == "bottom" then
+        elseif split == "bottom" then
             vim.cmd[[
             sp
             wincmd J
@@ -154,16 +154,30 @@ M.get_full_height = function ()
    return full_height
 end
 
+M.toggleBottom = function()
+    M._toggleTerm("bottom")
+end
+
+M.toggleRight = function()
+    M._toggleTerm("right")
+end
+
 M.toggleTerm = function ()
+local split = tman.split
+M._toggleTerm(split)
+end
+
+M._toggleTerm = function (split)
+print(split)
   if M.closeTermIfOpen() == false then
-        M.openTerm()
+        M.openTerm(split)
 -- local width = M.get_full_width()
     -- vim.pretty_print({'test'})
 
     local win = vim.api.nvim_get_current_win()
-    if tman.split == "right" then
+    if split == "right" then
         vim.api.nvim_win_set_width(win, math.floor(M.get_full_width() /100 * tman.width ))
-    elseif tman.split == "bottom" then
+    elseif split == "bottom" then
         vim.api.nvim_win_set_height(win, math.floor(M.get_full_height() /100 * tman.height ))
     end
   end

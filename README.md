@@ -28,12 +28,13 @@ local tman = require('neotermman')
 tman.init({toggle = "<leader>gg", prefix = "<leader>t"})
 
 -- setup how the terminal buffer is displayed
+-- Note: you don't need to do this if you are okay with using the defaults
 tman.setup {
   split = "bottom", -- supported values: "bottom", "right"
   -- set width and height as a percentage of the terminal width and height
   -- should be a integer between 1 to 100
-  width = 50,
-  height = 40,
+  width = 50, -- defualt is 50
+  height = 40, -- defualt is 40
 }
 
 ```
@@ -49,6 +50,11 @@ end)
 vim.keymap.set("t", "<A-;>", function ()
   tman.toggleTerm()
 end)
+
+-- toggle terminal from a specific side
+vim.keymap.set("n", "<leader>tr", tman.toggleRight)
+vim.keymap.set("n", "<leader>tb", tman.toggleBottom)
+
 
 ```
 #### Send command
