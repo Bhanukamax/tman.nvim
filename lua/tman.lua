@@ -4,12 +4,13 @@ local tman = {}
 
 
 local pprint = function (tbl)
-   vim.pretty_print(tbl)
+    vim.pretty_print(tbl)
 end
 
 tman.split = "bottom"
 tman.width = 50
 tman.height =  40
+tman.lastSide = "bottom"
 
 M.setup = function (tbl)
     tman.split = tbl.split or "bottom"
@@ -38,7 +39,7 @@ M.openTerm = function (split)
         if split == "right" then
             vim.cmd[[
             sp
-        wincmd L
+            wincmd L
             ]]
         elseif split == "bottom" then
             vim.cmd[[
@@ -50,17 +51,17 @@ M.openTerm = function (split)
         return
     end
 
-        if split == "right" then
-            vim.cmd[[
+    if split == "right" then
+        vim.cmd[[
             sp
-        wincmd L
+            wincmd L
             ]]
-        elseif split == "bottom" then
-            vim.cmd[[
+    elseif split == "bottom" then
+        vim.cmd[[
             sp
             wincmd J
             ]]
-        end
+    end
     vim.cmd[[ term ]]
     tman.win = vim.api.nvim_get_current_win()
     tman.buf = vim.api.nvim_win_get_buf(tman.win)
@@ -73,21 +74,21 @@ M.sendCommand = function(cmd, opt)
         width = tman.width,
         height = tman.height,
     }
-     local tbl = {
+    local tbl = {
         split = opt.split,
         width = opt.width,
         height = opt.height,
-     }
-     M.setup(tbl)
+    }
+    M.setup(tbl)
     if M.isTermValid() then
         vim.api.nvim_chan_send(tman.term, cmd)
     else
-        M.openTerm()
+        M.openTerm(tman.split)
         vim.api.nvim_chan_send(tman.term, cmd)
     end
     if opt.open then
         if not M.hasTermWin() then
-            M.openTerm()
+            M.openTerm(tman.split)
         end
     end
     tman.split = oldTbl.split
@@ -140,18 +141,18 @@ end
 
 M.get_full_width = function ()
     local full_width = 0
-   for _,v in pairs(vim.api.nvim_list_wins()) do
-    full_width = full_width + vim.api.nvim_win_get_width(v)
-   end
-   return full_width
+    for _,v in pairs(vim.api.nvim_list_wins()) do
+        full_width = full_width + vim.api.nvim_win_get_width(v)
+    end
+    return full_width
 end
 
 M.get_full_height = function ()
     local full_height = 0
-   for _,v in pairs(vim.api.nvim_list_wins()) do
-    full_height = full_height + vim.api.nvim_win_get_height(v)
-   end
-   return full_height
+    for _,v in pairs(vim.api.nvim_list_wins()) do
+        full_height = full_height + vim.api.nvim_win_get_height(v)
+    end
+    return full_height
 end
 
 M.toggleBottom = function()
@@ -162,25 +163,30 @@ M.toggleRight = function()
     M._toggleTerm("right")
 end
 
+M.toggleLast = function()
+    M._toggleTerm(tman.lastSide)
+end
+
+
 M.toggleTerm = function ()
-local split = tman.split
-M._toggleTerm(split)
+    local split = tman.split
+    M._toggleTerm(split)
 end
 
 M._toggleTerm = function (split)
-print(split)
-  if M.closeTermIfOpen() == false then
+    tman.lastSide = split
+    if M.closeTermIfOpen() == false then
         M.openTerm(split)
--- local width = M.get_full_width()
-    -- vim.pretty_print({'test'})
+        -- local width = M.get_full_width()
+        -- vim.pretty_print({'test'})
 
-    local win = vim.api.nvim_get_current_win()
-    if split == "right" then
-        vim.api.nvim_win_set_width(win, math.floor(M.get_full_width() /100 * tman.width ))
-    elseif split == "bottom" then
-        vim.api.nvim_win_set_height(win, math.floor(M.get_full_height() /100 * tman.height ))
+        local win = vim.api.nvim_get_current_win()
+        if split == "right" then
+            vim.api.nvim_win_set_width(win, math.floor(M.get_full_width() /100 * tman.width ))
+        elseif split == "bottom" then
+            vim.api.nvim_win_set_height(win, math.floor(M.get_full_height() /100 * tman.height ))
+        end
     end
-  end
 end
 
 M.goToTerm = function ()

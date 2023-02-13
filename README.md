@@ -54,8 +54,10 @@ end)
 vim.keymap.set("n", "<leader>tr", tman.toggleRight)
 vim.keymap.set("n", "<leader>tb", tman.toggleBottom)
 
-
+-- toggle terminal from the last open side
+vim.keymap.set("n", "<leader>tt", tman.toggleLast)
 ```
+
 #### Send command
 
 
