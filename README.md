@@ -5,7 +5,7 @@
 
 
 ### Note:
-- Tman.nvim is a simple light weight plugin to manage a terminal buffer in neovim
+- Tman.nvim is a simple light weight plugin to manage a terminal buffer in neovim.
 
 #### How to install
 
