@@ -23,8 +23,7 @@ Add this to your packer or Lazy config
 
 ```lua
 
-local tman = require('neotermman')
-tman.init({toggle = "<leader>gg", prefix = "<leader>t"})
+local tman = require('tman')
 
 -- setup how the terminal buffer is displayed
 -- Note: you don't need to do this if you are okay with using the defaults
