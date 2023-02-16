@@ -75,20 +75,20 @@ M.sendCommand = function(cmd, opt)
         height = tman.height,
     }
     local tbl = {
-        split = opt.split,
-        width = opt.width,
-        height = opt.height,
+        split = opt.split or oldTbl.split,
+        width = opt.width or oldTbl.width,
+        height = opt.height or oldTbl.height,
     }
     M.setup(tbl)
     if M.isTermValid() then
         vim.api.nvim_chan_send(tman.term, cmd)
     else
-        M.openTerm(tman.split)
+        M.openTerm(tbl.split)
         vim.api.nvim_chan_send(tman.term, cmd)
     end
     if opt.open then
         if not M.hasTermWin() then
-            M.openTerm(tman.split)
+            M.openTerm(tbl.split)
         end
     end
     tman.split = oldTbl.split
