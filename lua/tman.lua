@@ -92,12 +92,13 @@ M.sendCommand = function(cmd, opt)
         height = opt.height or oldTbl.height,
     }
     M.setup(tbl)
-    if M.isTermValid() then
-        vim.api.nvim_chan_send(tman.term, cmd)
-    else
+    if not M.isTermValid() then
         M.openTerm(tbl.split)
-        vim.api.nvim_chan_send(tman.term, cmd)
     end
+    if opt.pre then
+        vim.api.nvim_chan_send(tman.term, opt.pre .. '\r')
+    end
+    vim.api.nvim_chan_send(tman.term, cmd)
     if opt.open then
         if not M.hasTermWin() then
             M.openTerm(tbl.split)
