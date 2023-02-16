@@ -59,6 +59,16 @@ vim.keymap.set("n", "<leader>tt", tman.toggleLast)
 
 #### Send command
 
+call to send some command to the terminal buffer
+
+`require("tman").sendCommand(cmd, opts)`
+
+cmd: string -> command to send
+
+opts: table
+opts.spilt: "right" or "bottom":  pass a split possition to override default when the command is executed
+opts.open: bool -> if true, open the terminal buffer (always opens if there is no previous terminal buffer)
+opts.pre: string -> a command to excute before the currend `cmd`
 
 ##### use gitk for the current file
 
@@ -76,9 +86,8 @@ end
 vim.cmd[[
 
 function! Tman(cmd)
-
-let g:cmd = a:cmd . "\n"
-lua require("tman").sendCommand(vim.g.cmd, {open = true, split = "right"})
+  let g:cmd = a:cmd . "\n"
+  lua require("tman").sendCommand(vim.g.cmd, {open = true, split = "right", pre = "clear"})
 endfunction
 
 let g:test#custom_strategies = {'tman': function('Tman')}
