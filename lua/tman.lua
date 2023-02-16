@@ -13,6 +13,7 @@ tman.height =  40
 tman.lastSide = "bottom"
 
 M.setup = function (tbl)
+    tbl = M.validateAndGetWithSplit(tbl)
     tman.split = tbl.split or "bottom"
     tman.width = tbl.width or 50
     tman.height= tbl.height or 40
@@ -68,7 +69,18 @@ M.openTerm = function (split)
     tman.term = vim.b.terminal_job_id
 end
 
+M.validateAndGetWithSplit = function (opt)
+    if opt.split ~= nil then
+        if not (opt.split == "right" or opt.split == "bottom") then
+            vim.notify("Invalid split " .. opt.split, vim.log.levels.ERROR)
+            opt.split = tman.split
+        end
+    end
+    return opt
+end
+
 M.sendCommand = function(cmd, opt)
+    opt = M.validateAndGetWithSplit(opt)
     local oldTbl = {
         split = tman.split,
         width = tman.width,
