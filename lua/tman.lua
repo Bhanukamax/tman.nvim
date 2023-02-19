@@ -145,20 +145,20 @@ M.closeTermIfOpen = function()
     return hasTerm
 end
 
-M.get_full_width = function ()
-    local full_width = 0
-    for _,v in pairs(vim.api.nvim_list_wins()) do
-        full_width = full_width + vim.api.nvim_win_get_width(v)
+M._get_first_ui = function ()
+    for _, v in ipairs(vim.api.nvim_list_uis()) do
+        return v
     end
-    return full_width
 end
 
+-- Returns the width of first UI
+M.get_full_width = function ()
+    return M._get_first_ui().width
+end
+
+-- Returns the Height of first UI
 M.get_full_height = function ()
-    local full_height = 0
-    for _,v in pairs(vim.api.nvim_list_wins()) do
-        full_height = full_height + vim.api.nvim_win_get_height(v)
-    end
-    return full_height
+    return M._get_first_ui().height
 end
 
 M.toggleBottom = function()
