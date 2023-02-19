@@ -73,6 +73,10 @@ M.validateAndGetWithSplit = function (opt)
 end
 
 M.sendCommand = function(cmd, opt)
+    if rawget (opt, "scrollTop") == nil then
+        opt.scrollTop = true
+    end
+
     opt = M.validateAndGetWithSplit(opt)
     local oldTbl = {
         split = tman.split,
@@ -87,23 +91,22 @@ M.sendCommand = function(cmd, opt)
     M.setup(tbl)
     if not M.isTermValid() then
         M.openTerm({split = tbl.split})
+        M.closeTermIfOpen()
     end
     if opt.pre then
         vim.api.nvim_chan_send(tman.term, opt.pre .. '\r')
     end
-    vim.api.nvim_chan_send(tman.term, cmd)
-    if opt.open then
-        if not M.hasTermWin() then
-            M.openTerm({split = tbl.split})
+    if opt.open and not M.hasTermWin() then
+        M.openTerm({split = tbl.split})
+        if opt.scrollTop then
+            vim.api.nvim_chan_send(tman.term, 'clear \r')
+            vim.cmd "normal! G"
         end
     end
+    vim.api.nvim_chan_send(tman.term, cmd)
     tman.split = oldTbl.split
     tman.width = oldTbl.width
     tman.height = oldTbl.height
-end
-
-M.sendCommandLn = function(cmd, shouldOpen)
-    M.sendCommand(cmd .. "\n", shouldOpen)
 end
 
 M.hasOnlyTermWins = function()
