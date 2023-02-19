@@ -37,22 +37,6 @@ end
 M.openTerm = function (tbl)
     local split = tbl.split
     tman.last_buf_id = vim.api.nvim_get_current_buf()
-    if M.isTermValid() then
-        if split == "right" then
-            vim.cmd[[
-            sp
-            wincmd L
-            ]]
-        elseif split == "bottom" then
-            vim.cmd[[
-            sp
-            wincmd J
-            ]]
-        end
-        vim.api.nvim_set_current_buf(tman.buf)
-        return
-    end
-
     if split == "right" then
         vim.cmd[[
             sp
@@ -64,6 +48,12 @@ M.openTerm = function (tbl)
             wincmd J
             ]]
     end
+
+    if M.isTermValid() then
+        vim.api.nvim_set_current_buf(tman.buf)
+        return
+    end
+
     vim.cmd[[ term ]]
     tman.win = vim.api.nvim_get_current_win()
     tman.buf = vim.api.nvim_win_get_buf(tman.win)
