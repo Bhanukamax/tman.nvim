@@ -56,6 +56,7 @@ vim.keymap.set("n", "<leader>tt", tman.toggleLast)
 
 call to send some command to the terminal buffer
 
+
 `require("tman").sendCommand(cmd, opts)`
 
 cmd: string -> command to send
@@ -65,6 +66,7 @@ opts: table
 - opts.split: "right" or "bottom":  pass a split possition to override default when the command is executed
 - opts.open: bool -> if true, open the terminal buffer (always opens if there is no previous terminal buffer)
 - opts.pre: string -> a command to excute before the currend `cmd`
+- opts.scrollTop: bool (default: true) -> scroll the prompt to top before executing the currently sent command, this is works better than sending `clear` as the `pre` command.
 
 ##### use gitk for the current file
 
