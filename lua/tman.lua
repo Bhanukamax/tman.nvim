@@ -60,6 +60,12 @@ M.openTerm = function (tbl)
     if tbl.insert then
         vim.cmd "normal! i"
     end
+    local win = vim.api.nvim_get_current_win()
+    if split == "right" then
+        vim.api.nvim_win_set_width(win, math.floor(vim.o.columns / 100 * tman.width ))
+    elseif split == "bottom" then
+        vim.api.nvim_win_set_height(win, math.floor(vim.o.lines /100 * tman.height ))
+    end
 end
 
 M.validateAndGetWithSplit = function (opt)
@@ -175,12 +181,6 @@ M._toggleTerm = function (tbl)
     if M.closeTermIfOpen() == false then
         M.openTerm({ split = split, insert = tbl.insert })
 
-        local win = vim.api.nvim_get_current_win()
-        if split == "right" then
-            vim.api.nvim_win_set_width(win, math.floor(vim.o.columns / 100 * tman.width ))
-        elseif split == "bottom" then
-            vim.api.nvim_win_set_height(win, math.floor(vim.o.lines /100 * tman.height ))
-        end
     end
 end
 
