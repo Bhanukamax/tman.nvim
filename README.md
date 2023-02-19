@@ -31,8 +31,8 @@ tman.setup {
   split = "bottom", -- supported values: "bottom", "right"
   -- set width and height as a percentage of the terminal width and height
   -- should be a integer between 1 to 100
-  width = 50, -- defualt is 50
-  height = 40, -- defualt is 40
+  width = 50, -- default is 50
+  height = 40, -- default is 40
 }
 
 ```
@@ -40,14 +40,11 @@ tman.setup {
 
 #### Toggle terminal
 ```lua
-vim.keymap.set("n", "<A-;>", function ()
-  tman.toggleTerm()
-  vim.cmd "normal! i" -- if you like to open terminal in insert mode
-end)
+-- pass insert true to open terminal in insert mode
+-- useful when you just want the terminal for issuing a quick command interactively like `git push`, etc
+vim.keymap.set("n", "<A-;>", function () tman.toggleLast({insert = true}) end)
+vim.keymap.set("t", "<A-;>", tman.toggleLast)
 
-vim.keymap.set("t", "<A-;>", function ()
-  tman.toggleTerm()
-end)
 
 -- toggle terminal from a specific side
 vim.keymap.set("n", "<leader>tr", tman.toggleRight)
@@ -135,4 +132,5 @@ return {
 vim.keymap.set("t", "<C-x><C-w>", "<C-\\><C-N><C-w>", {})
 vim.keymap.set("t", "<C-x><Esc>", "<C-\\><C-N>", {})
 ```
+
 
