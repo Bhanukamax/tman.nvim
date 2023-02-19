@@ -1,0 +1,27 @@
+-- Note: if you are using a neovim version lower than 0.9 use the following to get .nvim.lua working
+-- vim.g.my_use_exrc = true
+-- vim.api.nvim_create_autocmd("VimEnter", {
+--   pattern = "*",
+--   callback = function ()
+--     if not vim.g.my_use_exrc then return end
+--
+--     local my_exrc = vim.loop.cwd() .. "/.nvim.lua"
+--     local f = io.open(my_exrc, "r")
+--
+--     if f then
+--       vim.api.nvim_command("source " .. my_exrc)
+--       f:close()
+--       return
+--     end
+--   end
+-- })
+
+
+-- lemmy-help cli is required for this to work
+vim.api.nvim_create_autocmd("BufWritePost", {
+    group = vim.api.nvim_create_augroup("tman", { clear = true }),
+    pattern = "*lua/tman.lua",
+    callback = function()
+        vim.fn.system("lemmy-help lua/tman.lua > doc/tman.txt")
+    end,
+})
