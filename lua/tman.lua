@@ -51,13 +51,15 @@ M.openTerm = function (tbl)
 
     if M.isTermValid() then
         vim.api.nvim_set_current_buf(tman.buf)
-        return
+    else
+        vim.cmd[[ term ]]
+        tman.win = vim.api.nvim_get_current_win()
+        tman.buf = vim.api.nvim_win_get_buf(tman.win)
+        tman.term = vim.b.terminal_job_id
     end
-
-    vim.cmd[[ term ]]
-    tman.win = vim.api.nvim_get_current_win()
-    tman.buf = vim.api.nvim_win_get_buf(tman.win)
-    tman.term = vim.b.terminal_job_id
+    if tbl.insert then
+        vim.cmd "normal! i"
+    end
 end
 
 M.validateAndGetWithSplit = function (opt)
@@ -167,8 +169,12 @@ M.toggleRight = function()
     M._toggleTerm({ split = "right" })
 end
 
-M.toggleLast = function()
-    M._toggleTerm({split = tman.lastSide})
+M.toggleLast = function(tbl)
+    local opt = {split = tman.lastSide}
+    if tbl then
+        opt.insert = tbl.insert or false
+    end
+    M._toggleTerm(opt)
 end
 
 
@@ -181,9 +187,7 @@ M._toggleTerm = function (tbl)
     local split = tbl.split
     tman.lastSide = split
     if M.closeTermIfOpen() == false then
-        M.openTerm({ split = split })
-        -- local width = M.get_full_width()
-        -- vim.pretty_print({'test'})
+        M.openTerm({ split = split, insert = tbl.insert })
 
         local win = vim.api.nvim_get_current_win()
         if split == "right" then
