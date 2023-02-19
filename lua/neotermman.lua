@@ -1,3 +1,7 @@
+-- Deprecated, this was the original `neotermman` pluggin written in fennels
+-- is no longer maintained
+vim.notify("neotermman is derecated and no longer maintained. Please use tman.nvim instead, usage: require('tman')", vim.log.levels.WARN)
+-- vim.notify("neotermman is der ", vim.log.levels.WARN)
 local M = {}
 local is_term_open = false
 local win_id = nil
