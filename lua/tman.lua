@@ -145,22 +145,6 @@ M.closeTermIfOpen = function()
     return hasTerm
 end
 
-M._get_first_ui = function ()
-    for _, v in ipairs(vim.api.nvim_list_uis()) do
-        return v
-    end
-end
-
--- Returns the width of first UI
-M.get_full_width = function ()
-    return M._get_first_ui().width
-end
-
--- Returns the Height of first UI
-M.get_full_height = function ()
-    return M._get_first_ui().height
-end
-
 M.toggleBottom = function()
     M._toggleTerm({ split = "bottom" })
 end
@@ -177,7 +161,6 @@ M.toggleLast = function(tbl)
     M._toggleTerm(opt)
 end
 
-
 M.toggleTerm = function ()
     local split = tman.split
     M._toggleTerm({ split = split })
@@ -191,9 +174,9 @@ M._toggleTerm = function (tbl)
 
         local win = vim.api.nvim_get_current_win()
         if split == "right" then
-            vim.api.nvim_win_set_width(win, math.floor(M.get_full_width() /100 * tman.width ))
+            vim.api.nvim_win_set_width(win, math.floor(vim.o.columns / 100 * tman.width ))
         elseif split == "bottom" then
-            vim.api.nvim_win_set_height(win, math.floor(M.get_full_height() /100 * tman.height ))
+            vim.api.nvim_win_set_height(win, math.floor(vim.o.lines /100 * tman.height ))
         end
     end
 end
