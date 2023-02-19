@@ -2,26 +2,28 @@ local M = {}
 
 local tman = {}
 
-
-local pprint = function (tbl)
-    vim.pretty_print(tbl)
-end
-
 tman.split = "bottom"
 tman.width = 50
 tman.height =  40
 tman.lastSide = "bottom"
+tman.wo = {
+    nu = false,
+    rnu = false,
+    scl = 'no'
+}
 
 M.setup = function (tbl)
     tbl = M.validateAndGetWithSplit(tbl)
     tman.split = tbl.split or "bottom"
     tman.width = tbl.width or 50
     tman.height= tbl.height or 40
-end
 
--- Goal is to drop harpoon as a dependency
-M.debug = function ()
-    pprint(tman)
+    if rawget(tbl, 'wo') == nil then
+        tbl.wo = {}
+    end
+    for k,v in pairs(tbl.wo) do
+        tman.wo[k] = v
+    end
 end
 
 M.isTermValid = function ()
@@ -56,6 +58,7 @@ M.openTerm = function (tbl)
         tman.win = vim.api.nvim_get_current_win()
         tman.buf = vim.api.nvim_win_get_buf(tman.win)
         tman.term = vim.b.terminal_job_id
+        M._set_window_options()
     end
     if tbl.insert then
         vim.cmd "normal! i"
@@ -65,6 +68,12 @@ M.openTerm = function (tbl)
         vim.api.nvim_win_set_width(win, math.floor(vim.o.columns / 100 * tman.width ))
     elseif split == "bottom" then
         vim.api.nvim_win_set_height(win, math.floor(vim.o.lines /100 * tman.height ))
+    end
+end
+
+M._set_window_options = function ()
+    for k,v in pairs(tman.wo) do
+        vim.api.nvim_win_set_option(tman.win, k, v)
     end
 end
 
