@@ -34,7 +34,8 @@ M.isTermValid = function ()
 end
 
 -- opens the bottom terminal
-M.openTerm = function (split)
+M.openTerm = function (tbl)
+    local split = tbl.split
     tman.last_buf_id = vim.api.nvim_get_current_buf()
     if M.isTermValid() then
         if split == "right" then
@@ -93,7 +94,7 @@ M.sendCommand = function(cmd, opt)
     }
     M.setup(tbl)
     if not M.isTermValid() then
-        M.openTerm(tbl.split)
+        M.openTerm({split = tbl.split})
     end
     if opt.pre then
         vim.api.nvim_chan_send(tman.term, opt.pre .. '\r')
@@ -101,7 +102,7 @@ M.sendCommand = function(cmd, opt)
     vim.api.nvim_chan_send(tman.term, cmd)
     if opt.open then
         if not M.hasTermWin() then
-            M.openTerm(tbl.split)
+            M.openTerm({split = tbl.split})
         end
     end
     tman.split = oldTbl.split
@@ -169,27 +170,28 @@ M.get_full_height = function ()
 end
 
 M.toggleBottom = function()
-    M._toggleTerm("bottom")
+    M._toggleTerm({ split = "bottom" })
 end
 
 M.toggleRight = function()
-    M._toggleTerm("right")
+    M._toggleTerm({ split = "right" })
 end
 
 M.toggleLast = function()
-    M._toggleTerm(tman.lastSide)
+    M._toggleTerm({split = tman.lastSide})
 end
 
 
 M.toggleTerm = function ()
     local split = tman.split
-    M._toggleTerm(split)
+    M._toggleTerm({ split = split })
 end
 
-M._toggleTerm = function (split)
+M._toggleTerm = function (tbl)
+    local split = tbl.split
     tman.lastSide = split
     if M.closeTermIfOpen() == false then
-        M.openTerm(split)
+        M.openTerm({ split = split })
         -- local width = M.get_full_width()
         -- vim.pretty_print({'test'})
 
