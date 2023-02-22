@@ -40,6 +40,14 @@ tman.wo = {
 ---      you may override these with the wo table
 ---@usage `require"tman".setup { split = "right", height = 40, wo = { nu = true } }`
 M.setup = function (opts)
+    tman.lastSide = opts.split or "bottom"
+    M._setup(opts)
+end
+
+---@private
+---Setup tman but does not change tman.lastSide
+---The main M.setup function should never be used inside the plugin code
+M._setup = function (opts)
     opts = M.validateAndGetWithSplit(opts)
     tman.split = opts.split or "bottom"
     tman.width = opts.width or 50
@@ -143,8 +151,15 @@ M.validateAndGetWithSplit = function (opt)
             vim.notify("Invalid split " .. opt.split, vim.log.levels.ERROR)
             opt.split = tman.split
         end
+    else
+        opt.split = tman.split
     end
     return opt
+end
+
+---@private
+M.debug = function ()
+    vim.pretty_print(tman)
 end
 
 ---@private
@@ -240,6 +255,7 @@ M.sendCommand = function(cmd, options)
     end
 
     options = M.validateAndGetWithSplit(options)
+
     local oldTbl = {
         split = tman.split,
         width = tman.width,
@@ -250,7 +266,7 @@ M.sendCommand = function(cmd, options)
         width = options.width or oldTbl.width,
         height = options.height or oldTbl.height,
     }
-    M.setup(tbl)
+    M._setup(tbl)
     if not M.isTermValid() then
         M.openTerm({split = tbl.split})
         M.closeTermIfOpen()
@@ -266,7 +282,7 @@ M.sendCommand = function(cmd, options)
         end
     end
     vim.api.nvim_chan_send(tman.term, cmd)
-    M.setup(oldTbl)
+    M._setup(oldTbl)
 end
 
 return M
