@@ -36,6 +36,8 @@ tman.setup {
 ```
 ### Usage
 
+Have a look at `:help tman.nvim` for complete API docs
+
 #### Toggle terminal
 ```lua
 -- pass insert true to open terminal in insert mode
