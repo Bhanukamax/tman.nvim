@@ -116,7 +116,7 @@ M.openTerm = function (tbl)
     if M.isTermValid() then
         vim.api.nvim_set_current_buf(tman.buf)
     else
-        vim.cmd[[ term ]]
+        vim.cmd[[term]]
         tman.win = vim.api.nvim_get_current_win()
         tman.buf = vim.api.nvim_win_get_buf(tman.win)
         tman.term = vim.b.terminal_job_id
@@ -284,5 +284,30 @@ M.sendCommand = function(cmd, options)
     vim.api.nvim_chan_send(tman.term, cmd)
     M._setup(oldTbl)
 end
+
+---@tag TmanCmd
+---Send command interactively to terminal
+vim.api.nvim_create_user_command("TmanCmd",
+    function()
+        local cmd = ""
+        local status = pcall(function ()
+             cmd = vim.fn.input({ prompt = "Command: "})
+        end)
+        if not status then return end
+        if not cmd or cmd == "" then return end
+        vim.g.tman_last_cmd = cmd
+        M.sendCommand(cmd .. "\r", { open = true })
+    end,
+    {}
+)
+
+vim.api.nvim_create_user_command("TmanCmdLast",
+    function()
+        local cmd = vim.g.tman_last_cmd
+        if not cmd or cmd == "" then return end
+        M.sendCommand(cmd .. "\r", { open = true })
+    end,
+    {}
+)
 
 return M
