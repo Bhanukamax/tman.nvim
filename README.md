@@ -54,7 +54,33 @@ vim.keymap.set("n", "<leader>tb", tman.toggleBottom)
 vim.keymap.set("n", "<leader>tt", tman.toggleLast)
 ```
 
-#### Send command
+#### Send commands interactively
+
+##### Send commands to terminal interactively
+
+`:TmanCmd`
+
+##### Resend last command
+
+`:TmanCmdLast`
+
+These commands are useful when you want to run things like build commands, test runner commands, for example: `cargo build`, `go build`, etc.
+
+###### How it works?
+- When you run `:TmanCmd` it'll propmt for you to enter a command.
+- Once you type in the command and press enter it'll open the Tman terminal and run the command you entered.
+- You can also run `:TmanCmdLast` to resend the last command you ran.
+
+One nice thing about using these commands is that you never have to go to insert mode in the terminal buffer, so you can just use these to run commands and navigate/visual select/yank text on terminal buffer without ever worrying about going between modes in the terminal buffer.
+
+And they works best with a some nice remaps like these:
+
+```lua
+  vim.keymap.set("n", "<leader>tc", ":TmanCmd<CR>")
+  vim.keymap.set("n", "<leader>tr", ":TmanCmdLast<CR>")
+```
+
+#### Send commands programmatically
 
 call to send some command to the terminal buffer
 
