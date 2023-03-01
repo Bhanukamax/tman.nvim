@@ -72,13 +72,17 @@ These commands are useful when you want to run things like build commands, test 
 - You can also run `:TmanCmdLast` to resend the last command you ran.
 
 One nice thing about using these commands is that you never have to go to insert mode in the terminal buffer, so you can just use these to run commands and navigate/visual select/yank text on terminal buffer without ever worrying about going between modes in the terminal buffer.
+![tman-cargo-build](https://user-images.githubusercontent.com/8494781/222031447-6e44ef13-9075-4238-b6ec-05d41133094a.gif)
 
 And they works best with a some nice remaps like these:
 
 ```lua
   vim.keymap.set("n", "<leader>tc", ":TmanCmd<CR>")
-  vim.keymap.set("n", "<leader>tr", ":TmanCmdLast<CR>")
+  vim.keymap.set("n", "<leader>tn", ":TmanCmdLast<CR>")
 ```
+
+![tman-cargo-build-with-keybinds](https://user-images.githubusercontent.com/8494781/222031470-c239fd0f-4b51-4ee3-b17b-d08dbc7d0c71.gif)
+
 
 #### Send commands programmatically
 
