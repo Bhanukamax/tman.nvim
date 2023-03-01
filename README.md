@@ -3,7 +3,11 @@
 
 ## Introduction
 
-- Tman.nvim is a light weight plugin to manage a terminal buffer in neovim.
+Tman.nvim is a terminal manager for Neovim, focused on running commands, tests, etc.
+<br/>Inspird by `ThePrimeagen/harpoon` and emacs `compilation-mode`.
+
+
+Works really well with the `vim-test` plugin as a [custom stratergy](https://github.com/Bhanukamax/tman.nvim/edit/master/README.md#use-as-a-vim-test-stratergy) to run tests using a single terminal buffer.
 
 #### How to install
 
@@ -117,12 +121,13 @@ end
 
 ##### use as a vim-test stratergy
 ```lua
+-- ~/.config/nvim/plugins/vim-test.lua (if using lazy.nvim as your plugin manager)
 
 vim.cmd[[
 
 function! Tman(cmd)
   let g:cmd = a:cmd . "\n"
-  lua require("tman").sendCommand(vim.g.cmd, {open = true, split = "right", pre = "clear"})
+  lua require("tman").sendCommand(vim.g.cmd, {open = true, split = "last"})
 endfunction
 
 let g:test#custom_strategies = {'tman': function('Tman')}
