@@ -56,11 +56,11 @@ vim.keymap.set("n", "<leader>tt", tman.toggleLast)
 
 #### Send commands interactively
 
-##### Prompts to Send commands to the terminal
+##### Prompts to Send a command to the terminal
 
 `:TmanCmd`
 
-##### Resend last command
+##### Resend the last command
 
 `:TmanCmdLast`
 
