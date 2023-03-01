@@ -79,7 +79,7 @@ And they works best with a some nice remaps like these:
 
 ```lua
   vim.keymap.set("n", "<leader>tc", ":TmanCmd<CR>")
-  vim.keymap.set("n", "<leader>tn", ":TmanCmdLast<CR>")
+  vim.keymap.set("n", "<leader>tn", ":TmanCmdLast<CR>") -- <leader>tl or <leader>tr would be a better mnemonic binding
 ```
 
 ![tman-cargo-build-with-keybinds](https://user-images.githubusercontent.com/8494781/222031470-c239fd0f-4b51-4ee3-b17b-d08dbc7d0c71.gif)
@@ -157,14 +157,12 @@ return {
 #### After using terminal
 - to exit out of the insert mode in the terminal, you need to use the neovim terminal escape key sequence which is `<C-\><C-N>`.
 - since above key sequence is not very easy, you can rebind it to something else.
-- If you already haven't got a keybinding, I think using `C-w` and piping that to `wincmd` is a great way because you can use all the `C-w` prefix commands with that
-- Add the following to your vim config be able to do `C-w` prefixed commands from your terminal buffer.
+- I have found that C-x works best for me for this.
 
-#### Lua
+##### Lua
 
 ```lua
-vim.keymap.set("t", "<C-x><C-w>", "<C-\\><C-N><C-w>", {})
-vim.keymap.set("t", "<C-x><Esc>", "<C-\\><C-N>", {})
+vim.keymap.set("t", "<C-x>", "<C-\\><C-N>", {})
 ```
 
 
