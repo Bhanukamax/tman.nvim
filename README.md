@@ -56,7 +56,7 @@ vim.keymap.set("n", "<leader>tt", tman.toggleLast)
 
 #### Send commands interactively
 
-##### Send commands to terminal interactively
+##### Prompts to Send commands to the terminal
 
 `:TmanCmd`
 
@@ -66,7 +66,7 @@ vim.keymap.set("n", "<leader>tt", tman.toggleLast)
 
 These commands are useful when you want to run things like build commands, test runner commands, for example: `cargo build`, `go build`, etc.
 
-###### How it works?
+##### How to use these
 - When you run `:TmanCmd` it'll propmt for you to enter a command.
 - Once you type in the command and press enter it'll open the Tman terminal and run the command you entered.
 - You can also run `:TmanCmdLast` to resend the last command you ran.
