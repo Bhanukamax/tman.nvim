@@ -81,7 +81,7 @@ One nice thing about using these commands is that you never have to go to insert
 
 ![tman-cargo-build](https://user-images.githubusercontent.com/8494781/222031447-6e44ef13-9075-4238-b6ec-05d41133094a.gif)
 
-And they works best with a some nice remaps like these:
+And they works best with some nice remaps like these:
 
 ```lua
   vim.keymap.set("n", "<leader>tc", ":TmanCmd<CR>")
