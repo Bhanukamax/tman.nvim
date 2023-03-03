@@ -7,7 +7,7 @@ Tman.nvim is a terminal manager for Neovim, focused on running commands, tests, 
 <br/>Inspird by `ThePrimeagen/harpoon` and emacs `compilation-mode`.
 
 
-Works really well with the `vim-test` plugin as a [custom stratergy](https://github.com/Bhanukamax/tman.nvim/edit/master/README.md#use-as-a-vim-test-stratergy) to run tests using a single terminal buffer.
+Works really well with the `vim-test` plugin as a [custom stratergy](https://github.com/Bhanukamax/tman.nvim/blob/master/README.md#use-as-a-vim-test-stratergy) to run tests using a single terminal buffer.
 
 #### How to install
 
