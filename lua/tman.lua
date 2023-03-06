@@ -1,6 +1,6 @@
 ---@toc tman.nvim
 
----@devider
+---@divider
 ---@mod tman.introduction Introduction
 ---@brief [[
 --- Tman.nvim is a light weight plugin to manage a terminal buffer in neovim.
@@ -8,6 +8,7 @@
 local M = {}
 
 local tman = {}
+
 
 tman.split = "bottom"
 tman.width = 50
@@ -87,7 +88,7 @@ M.toggleDefault = function ()
 end
 
 ---@private
-M.isTermValid = function ()
+M._isTermValid = function ()
     for _,b in ipairs(vim.api.nvim_list_bufs()) do
         if b == tman.buf then
             return true
@@ -98,7 +99,7 @@ end
 
 ---opens the bottom terminal
 ---@private
-M.openTerm = function (tbl)
+M._openTerm = function (tbl)
     local split = tbl.split
     tman.last_buf_id = vim.api.nvim_get_current_buf()
     if split == "right" then
@@ -113,7 +114,7 @@ M.openTerm = function (tbl)
             ]]
     end
 
-    if M.isTermValid() then
+    if M._isTermValid() then
         vim.api.nvim_set_current_buf(tman.buf)
     else
         vim.cmd[[term]]
@@ -222,9 +223,9 @@ end
 M._toggleTerm = function (tbl)
     local split = tbl.split
     tman.lastSide = split
-    if M.closeTermIfOpen() == false then
-        M.openTerm({ split = split, insert = tbl.insert })
 
+    if M.closeTermIfOpen() == false then
+        M._openTerm({ split = split, insert = tbl.insert })
     end
 end
 
@@ -267,15 +268,15 @@ M.sendCommand = function(cmd, options)
         height = options.height or oldTbl.height,
     }
     M._setup(tbl)
-    if not M.isTermValid() then
-        M.openTerm({split = tbl.split})
+    if not M._isTermValid() then
+        M._openTerm({split = tbl.split})
         M.closeTermIfOpen()
     end
     if options.pre then
         vim.api.nvim_chan_send(tman.term, options.pre .. '\r')
     end
     if options.open and not M.hasTermWin() then
-        M.openTerm({split = tbl.split})
+        M._openTerm({split = tbl.split})
         if options.scrollTop then
             vim.api.nvim_chan_send(tman.term, 'clear \r')
             vim.cmd "normal! G"
