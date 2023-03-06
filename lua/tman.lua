@@ -102,35 +102,39 @@ end
 M._openTerm = function (tbl)
     local split = tbl.split
     tman.last_buf_id = vim.api.nvim_get_current_buf()
-    if split == "right" then
-        vim.cmd[[
-            sp
-            wincmd L
-            ]]
-    elseif split == "bottom" then
-        vim.cmd[[
-            sp
-            wincmd J
-            ]]
-    end
 
+    -- Create a split and move to the correct position
+    vim.cmd.sp()
+    local winDir = "J"
+    if split == "right" then winDir = "L" end
+    vim.cmd.wincmd(winDir)
+
+    M._set_term_buffer()
+
+    if tbl.insert then vim.cmd "normal! i" end
+
+    M._set_dimensions(vim.api.nvim_get_current_win(), split)
+end
+
+---@private
+M._set_term_buffer = function ()
     if M._isTermValid() then
         vim.api.nvim_set_current_buf(tman.buf)
     else
-        vim.cmd[[term]]
+        vim.cmd.term()
         tman.win = vim.api.nvim_get_current_win()
         tman.buf = vim.api.nvim_win_get_buf(tman.win)
         tman.term = vim.b.terminal_job_id
         M._set_window_options()
     end
-    if tbl.insert then
-        vim.cmd "normal! i"
-    end
-    local win = vim.api.nvim_get_current_win()
+end
+
+---@private
+M._set_dimensions = function (win, split)
     if split == "right" then
         vim.api.nvim_win_set_width(win, math.floor(vim.o.columns / 100 * tman.width ))
     elseif split == "bottom" then
-        vim.api.nvim_win_set_height(win, math.floor(vim.o.lines /100 * tman.height ))
+        vim.api.nvim_win_set_height(win, math.floor(vim.o.lines / 100 * tman.height ))
     end
 end
 
