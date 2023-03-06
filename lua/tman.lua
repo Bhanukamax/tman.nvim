@@ -14,6 +14,7 @@ tman.split = "bottom"
 tman.width = 50
 tman.height =  40
 tman.lastSide = "bottom"
+tman.cmdSplit = "bottom"
 tman.wo = {
     nu = false,
     rnu = false,
@@ -23,6 +24,10 @@ tman.wo = {
 ---@mod tman.setup Setup
 ---Trigger a rebuild of one or more projects.
 ---@param opts table optional configuration options:
+---  * {cmdSplit} (string) optional
+---    "right", "bottom", "last" defaults to ""
+---    used determing the split position of the terminal buffer when running a :TmanCmd and :TmanCmdLast
+---
 ---  * {split} (string) optional
 ---    "right" or "bottom" defaults to "bottom"
 ---
@@ -53,6 +58,7 @@ M._setup = function (opts)
     tman.split = opts.split or "bottom"
     tman.width = opts.width or 50
     tman.height= opts.height or 40
+    tman.cmdSplit = opts.cmdSplit or "bottom"
 
     if rawget(opts, 'wo') == nil then
         opts.wo = {}
@@ -60,6 +66,11 @@ M._setup = function (opts)
     for k,v in pairs(opts.wo) do
         tman.wo[k] = v
     end
+end
+
+---@private
+M._debug = function ()
+    vim.pretty_print(tman)
 end
 
 ---@mod tman.toggleTerm Toggling Terminals
@@ -265,11 +276,13 @@ M.sendCommand = function(cmd, options)
         split = tman.split,
         width = tman.width,
         height = tman.height,
+        cmdSplit = tman.cmdSplit,
     }
     local tbl = {
         split = options.split or oldTbl.split,
         width = options.width or oldTbl.width,
         height = options.height or oldTbl.height,
+        cmdSplit = options.cmdSplit or oldTbl.cmdSplit,
     }
     M._setup(tbl)
     if not M._isTermValid() then
@@ -301,7 +314,7 @@ vim.api.nvim_create_user_command("TmanCmd",
         if not status then return end
         if not cmd or cmd == "" then return end
         vim.g.tman_last_cmd = cmd
-        M.sendCommand(cmd .. "\r", { open = true })
+        M.sendCommand(cmd .. "\r", { open = true, split = tman.cmdSplit })
     end,
     {}
 )
@@ -310,7 +323,7 @@ vim.api.nvim_create_user_command("TmanCmdLast",
     function()
         local cmd = vim.g.tman_last_cmd
         if not cmd or cmd == "" then return end
-        M.sendCommand(cmd .. "\r", { open = true })
+        M.sendCommand(cmd .. "\r", { open = true, split = tman.cmdSplit })
     end,
     {}
 )

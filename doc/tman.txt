@@ -19,6 +19,10 @@ M.setup({opts})                                                        *M.setup*
 
     Parameters: ~
         {opts}  (table)  optional configuration options:
+                           * {cmdSplit} (string) optional
+                             "right", "bottom", "last" defaults to ""
+                             used determing the split position of the terminal buffer when running a :TmanCmd and :TmanCmdLast
+
                            * {split} (string) optional
                              "right" or "bottom" defaults to "bottom"
 
