@@ -1,6 +1,6 @@
 ---@toc tman.nvim
 
----@devider
+---@divider
 ---@mod tman.introduction Introduction
 ---@brief [[
 --- Tman.nvim is a light weight plugin to manage a terminal buffer in neovim.
@@ -9,10 +9,12 @@ local M = {}
 
 local tman = {}
 
+
 tman.split = "bottom"
 tman.width = 50
 tman.height =  40
 tman.lastSide = "bottom"
+tman.cmdSplit = "bottom"
 tman.wo = {
     nu = false,
     rnu = false,
@@ -22,6 +24,10 @@ tman.wo = {
 ---@mod tman.setup Setup
 ---Trigger a rebuild of one or more projects.
 ---@param opts table optional configuration options:
+---  * {cmdSplit} (string) optional
+---    "right", "bottom", "last" defaults to ""
+---    used determing the split position of the terminal buffer when running a :TmanCmd and :TmanCmdLast
+---
 ---  * {split} (string) optional
 ---    "right" or "bottom" defaults to "bottom"
 ---
@@ -52,6 +58,7 @@ M._setup = function (opts)
     tman.split = opts.split or "bottom"
     tman.width = opts.width or 50
     tman.height= opts.height or 40
+    tman.cmdSplit = opts.cmdSplit or "bottom"
 
     if rawget(opts, 'wo') == nil then
         opts.wo = {}
@@ -59,6 +66,11 @@ M._setup = function (opts)
     for k,v in pairs(opts.wo) do
         tman.wo[k] = v
     end
+end
+
+---@private
+M._debug = function ()
+    vim.pretty_print(tman)
 end
 
 ---@mod tman.toggleTerm Toggling Terminals
@@ -87,7 +99,7 @@ M.toggleDefault = function ()
 end
 
 ---@private
-M.isTermValid = function ()
+M._isTermValid = function ()
     for _,b in ipairs(vim.api.nvim_list_bufs()) do
         if b == tman.buf then
             return true
@@ -98,38 +110,42 @@ end
 
 ---opens the bottom terminal
 ---@private
-M.openTerm = function (tbl)
+M._openTerm = function (tbl)
     local split = tbl.split
     tman.last_buf_id = vim.api.nvim_get_current_buf()
-    if split == "right" then
-        vim.cmd[[
-            sp
-            wincmd L
-            ]]
-    elseif split == "bottom" then
-        vim.cmd[[
-            sp
-            wincmd J
-            ]]
-    end
 
-    if M.isTermValid() then
+    -- Create a split and move to the correct position
+    vim.cmd.sp()
+    local winDir = "J"
+    if split == "right" then winDir = "L" end
+    vim.cmd.wincmd(winDir)
+
+    M._set_term_buffer()
+
+    if tbl.insert then vim.cmd "normal! i" end
+
+    M._set_dimensions(vim.api.nvim_get_current_win(), split)
+end
+
+---@private
+M._set_term_buffer = function ()
+    if M._isTermValid() then
         vim.api.nvim_set_current_buf(tman.buf)
     else
-        vim.cmd[[term]]
+        vim.cmd.term()
         tman.win = vim.api.nvim_get_current_win()
         tman.buf = vim.api.nvim_win_get_buf(tman.win)
         tman.term = vim.b.terminal_job_id
         M._set_window_options()
     end
-    if tbl.insert then
-        vim.cmd "normal! i"
-    end
-    local win = vim.api.nvim_get_current_win()
+end
+
+---@private
+M._set_dimensions = function (win, split)
     if split == "right" then
         vim.api.nvim_win_set_width(win, math.floor(vim.o.columns / 100 * tman.width ))
     elseif split == "bottom" then
-        vim.api.nvim_win_set_height(win, math.floor(vim.o.lines /100 * tman.height ))
+        vim.api.nvim_win_set_height(win, math.floor(vim.o.lines / 100 * tman.height ))
     end
 end
 
@@ -222,9 +238,9 @@ end
 M._toggleTerm = function (tbl)
     local split = tbl.split
     tman.lastSide = split
-    if M.closeTermIfOpen() == false then
-        M.openTerm({ split = split, insert = tbl.insert })
 
+    if M.closeTermIfOpen() == false then
+        M._openTerm({ split = split, insert = tbl.insert })
     end
 end
 
@@ -260,22 +276,24 @@ M.sendCommand = function(cmd, options)
         split = tman.split,
         width = tman.width,
         height = tman.height,
+        cmdSplit = tman.cmdSplit,
     }
     local tbl = {
         split = options.split or oldTbl.split,
         width = options.width or oldTbl.width,
         height = options.height or oldTbl.height,
+        cmdSplit = options.cmdSplit or oldTbl.cmdSplit,
     }
     M._setup(tbl)
-    if not M.isTermValid() then
-        M.openTerm({split = tbl.split})
+    if not M._isTermValid() then
+        M._openTerm({split = tbl.split})
         M.closeTermIfOpen()
     end
     if options.pre then
         vim.api.nvim_chan_send(tman.term, options.pre .. '\r')
     end
     if options.open and not M.hasTermWin() then
-        M.openTerm({split = tbl.split})
+        M._openTerm({split = tbl.split})
         if options.scrollTop then
             vim.api.nvim_chan_send(tman.term, 'clear \r')
             vim.cmd "normal! G"
@@ -296,7 +314,7 @@ vim.api.nvim_create_user_command("TmanCmd",
         if not status then return end
         if not cmd or cmd == "" then return end
         vim.g.tman_last_cmd = cmd
-        M.sendCommand(cmd .. "\r", { open = true })
+        M.sendCommand(cmd .. "\r", { open = true, split = tman.cmdSplit })
     end,
     {}
 )
@@ -305,7 +323,7 @@ vim.api.nvim_create_user_command("TmanCmdLast",
     function()
         local cmd = vim.g.tman_last_cmd
         if not cmd or cmd == "" then return end
-        M.sendCommand(cmd .. "\r", { open = true })
+        M.sendCommand(cmd .. "\r", { open = true, split = tman.cmdSplit })
     end,
     {}
 )
