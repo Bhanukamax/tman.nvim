@@ -38,17 +38,21 @@ tman.setup {
 }
 
 ```
-### Usage
+#### Basic keybindings
+```lua
+-- This is my favourite way to toggle tman terminal, you don't have to care which mode you are in the terminal, just one keybind to toggle back and forth
+vim.keymap.set("n", "<A-;>", function () tman.toggleLast({insert = true}) end)
+vim.keymap.set("t", "<A-;>", tman.toggleLast)
+```
+
+### Advance Usage
 
 Have a look at `:help tman.nvim` for complete API docs
 
-#### Toggle terminal
-```lua
--- pass insert true to open terminal in insert mode
--- useful when you just want the terminal for issuing a quick command interactively like `git push`, etc
-vim.keymap.set("n", "<A-;>", function () tman.toggleLast({insert = true}) end)
-vim.keymap.set("t", "<A-;>", tman.toggleLast)
 
+
+toggle terminal from a specific side
+```lua
 
 -- toggle terminal from a specific side
 vim.keymap.set("n", "<leader>tr", tman.toggleRight)
